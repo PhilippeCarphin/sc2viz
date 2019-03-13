@@ -42,10 +42,15 @@ replay = SC2ReplayWrapper()
 def plot_locations(events, title):
     locations = np.array(list(map(lambda e:e.location, events)))
     try:
-        plt.scatter(locations[:,0], locations[:,1])
+        l = len(locations[:,0])
+        cols = {0:'green', 1:'blue', 2:'red', 3:'orange'}
+        c = [cols[i%3] for i in range(l)]
+        print(c)
+        plt.scatter(locations[:,0], locations[:,1], c=c)
+        # plt.scatter(locations[:,0], locations[:,1])
         plt.title(title)
         plt.show()
-    except:
+    except IndexError:
         print("Empty List")
 
 # target_points = list(replay.events_with_type(ge.TargetPointCommandEvent))
@@ -57,6 +62,8 @@ plot_locations(target_points_p1, "Target points of P1")
 target_points_p1 = list(replay.events_with_type(ge.TargetPointCommandEvent, pid=2))
 plot_locations(target_points_p1, "Target points of P1")
 
+from pprint import pprint
+# pprint(sc2reader.events.__dict__)
 quit()
 replay = sc2reader.load_replay('spawningtool_replays/dark_v_Solar_Game1_PortAleksanderLE.SC2Replay')
 events = replay.game_events[8000:]
@@ -76,7 +83,7 @@ print(len(camera_events))
 locations = np.array(list(camera_event_locations))
 print(locations.shape)
 
-plt.scatter(locations[:,0], locations[:,1])
+plt.scatter(locations[:,0], locations[:,1], cmap=plt.get_cmap('heat'))
 plt.show()
 
 #######################################################################
